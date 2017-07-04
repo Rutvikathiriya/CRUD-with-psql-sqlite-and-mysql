@@ -2,13 +2,12 @@
 # -*- coding : utf-8 -*-
 
 import MySQLdb as mdb
-import sqlite3,psycopg2
+import sqlite3, psycopg2
 
 def connection_sqlite():
     try:
         con = sqlite3.connect('mydb.db')
         cur = con.cursor()
-        print "database mydb successfully created"
         print(sqlite3.version)
         return con
     except sqlite3.Error as e:
@@ -19,13 +18,12 @@ def connection_mysql():
         cur = con.cursor()
         cur.execute("SELECT VERSION()")
         ver = cur.fetchone()
-        print "databse mydb created"
         print "mysql Database version : %s " % ver
         return con
 
 def connection_postgresql():
     try:
-        con = psycopg2.connect(user="rutvi", password = "rutvi", database="mytestdb", host="localhost", port ="5432")
+        con = psycopg2.connect(user="user", password = "password", database="mytestdb", host="localhost", port ="5432")
         cur = con.cursor()
         cur.execute('SELECT version()')
         ver = cur.fetchone()
