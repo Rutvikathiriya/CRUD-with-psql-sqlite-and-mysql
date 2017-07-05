@@ -8,22 +8,35 @@ class DataBase:
     conn = 0
     db = ""
 
-    def __init__(self,user):
+    def __init__(self,tab_name,user):
+        self.tab_name = tab_name
         if user == "1":
-            self.conn = db_config.connection_mysql()
-        elif user == "2":
             self.conn = db_config.connection_sqlite()
+        elif user == "2":
+            self.conn = db_config.connection_mysql()
         elif user == "3":
             self.conn = db_config.connection_postgresql()
 
-#------------------Create Table------------------------
+#------------------Create Table from user------------------------
 
-    def create(self):
-            cur = self.conn.cursor()
-            cur.execute("DROP TABLE IF EXISTS employ")
-            cur.execute("CREATE TABLE employ(Id INT,Name VARCHAR(25),City TEXT,Phone INT)")
+    def create(self,*args):
+        cur = self.conn.cursor()
+        query = "CREATE TABLE {}({})".format(self.tab_name, *args)
+        try:
+            cur.execute(query)
             print "New table is created"
             self.conn.commit()
+        except Exception as e:
+            print e
+
+#------------------Create static table------------------------
+
+    def create_tab(self):
+        cur = self.conn.cursor()
+        cur.execute("DROP TABLE IF EXISTS employ")
+        cur.execute("CREATE TABLE employ(Id INT,Name VARCHAR(25),City TEXT,Phone INT)")
+        print "New table is created"
+        self.conn.commit()
 
 #------------------Create Database-------------------------
 
